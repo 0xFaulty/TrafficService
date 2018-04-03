@@ -1,0 +1,20 @@
+<div *ngIf="resultFound == true" style="text-align: center; align-content: center">
+  <mat-card>
+    <mat-card-content>
+      <button mat-raised-button color="primary" class="example-button" routerLink="camera-page">
+        <h1>{{working}}</h1>
+      </button>
+    </mat-card-content>
+  </mat-card>
+  <div *ngFor="let point of points">
+    <mat-card>
+      <mat-card-content>
+        <button mat-raised-button color="primary" class="example-button">
+          <h1>{{point}}</h1>
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+
