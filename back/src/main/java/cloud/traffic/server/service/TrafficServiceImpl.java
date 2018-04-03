@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class TrafficServiceImpl implements TrafficService {
@@ -24,7 +26,12 @@ public class TrafficServiceImpl implements TrafficService {
 
     @Override
     public StatisticInfo getStatistic(int id) {
-        return new StatisticInfo(Arrays.asList(1d, 2d, 3d, 4d, 5d, 4d, 3d, 7d, 8d));
+        Map<Integer, List<Integer>> points = new HashMap<>();
+        points.put(1, Arrays.asList(1, 4, 5, 6, 7, 3));
+        points.put(2, Arrays.asList(2, 4, 5, 3, 0, 3));
+        points.put(3, Arrays.asList(1, 7, 5, 6, 7, 9));
+
+        return new StatisticInfo(points);
     }
 
     private String getUri(URI uri) throws IOException {

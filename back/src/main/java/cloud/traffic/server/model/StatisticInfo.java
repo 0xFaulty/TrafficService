@@ -3,12 +3,13 @@ package cloud.traffic.server.model;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class StatisticInfo {
-    private List<Double> points;
+    private Map<Integer, List<Integer>> points;
 
-    public StatisticInfo(List<Double> points) {
+    public StatisticInfo(Map<Integer, List<Integer>> points) {
         this.points = points;
     }
 
