@@ -1,5 +1,27 @@
-<div #chartTarget>
-  chart target
-</div>
+<mat-card class="main-div">
+  <mat-card-content>
+    <app-bar-chart *ngIf="chartData" [data]="chartData"></app-bar-chart>
+    <span>Выберите диапазон:</span>
+    <mat-form-field>
+      <mat-select [(value)]="selected_start">
+        <div *ngFor="let value of possible_values">
+          <mat-option value="{{value}}">{{value}}</mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select [(value)]="selected_end">
+        <div *ngFor="let value of possible_values">
+          <mat-option value="{{value}}">{{value}}</mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" class="example-button" (click)="getData()">Показать</button>
+    <p class="mat-error">{{errorMessage}}</p>
+  </mat-card-content>
+</mat-card>
+<!--<app-my-gallery></app-my-gallery>-->
 
-<div id="container"></div>
+
+
+

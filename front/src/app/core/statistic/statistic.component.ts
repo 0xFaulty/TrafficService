@@ -1,71 +1,70 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {TrafficService} from '../../shared/traffic.service';
-import * as Highcharts from 'assets/js/highcharts.js';
+import {Component, OnInit} from '@angular/core';
 import {chart} from 'assets/js/highcharts.js';
-import histogram from 'assets/js/histogram-bellcurve.js';
+import {TrafficService} from '../../shared/traffic.service';
+import {Statistic} from '../../entity/statistic';
 
 @Component({
   selector: 'app-statistic',
   templateUrl: './statistic.component.html',
   styleUrls: ['./statistic.component.scss']
 })
-export class StatisticComponent implements AfterViewInit {
+export class StatisticComponent implements OnInit {
 
-  data = [3.5, 3, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.4, 3, 3, 4,
-    4.4, 3.9, 3.5, 3.8, 3.8, 3.4, 3.7, 3.6, 3.3, 3.4, 3, 3.4, 3.5, 3.4, 3.2,
-    3.1, 3.4, 4.1, 4.2, 3.1, 3.2, 3.5, 3.6, 3, 3.4, 3.5, 2.3, 3.2, 3.5, 3.8,
-    3, 3.8, 3.2, 3.7, 3.3, 3.2, 3.2, 3.1, 2.3, 2.8, 2.8, 3.3, 2.4, 2.9, 2.7,
-    2, 3, 2.2, 2.9, 2.9, 3.1, 3, 2.7, 2.2, 2.5, 3.2, 2.8, 2.5, 2.8, 2.9, 3,
-    2.8, 3, 2.9, 2.6, 2.4, 2.4, 2.7, 2.7, 3, 3.4, 3.1, 2.3, 3, 2.5, 2.6, 3,
-    2.6, 2.3, 2.7, 3, 2.9, 2.9, 2.5, 2.8, 3.3, 2.7, 3, 2.9, 3, 3, 2.5, 2.9,
-    2.5, 3.6, 3.2, 2.7, 3, 2.5, 2.8, 3.2, 3, 3.8, 2.6, 2.2, 3.2, 2.8, 2.8,
-    2.7, 3.3, 3.2, 2.8, 3, 2.8, 3, 2.8, 3.8, 2.8, 2.8, 2.6, 3, 3.4, 3.1, 3,
-    3.1, 3.1, 3.1, 2.7, 3.2, 3.3, 3, 2.5, 3, 3.4, 3];
+  selected_start = '1';
+  selected_end = '12';
+  possible_values: any[];
 
-  constructor(private _trafficService: TrafficService) {
+  chartData: Array<any>;
+  errorMessage: string;
+
+  private saved_points: number[] = [];
+  private update_flag = false;
+
+  constructor(private _back: TrafficService) {
+    this.possible_values = [];
+    for (let i = 0; i < 24; ++i) {
+      this.possible_values.push(i);
+    }
   }
 
-  @ViewChild('chartTarget') chartTarget: ElementRef;
+  ngOnInit() {
+    this.sendRequest(1, 12);
+  }
 
-  chart: Highcharts.ChartObject;
-
-  ngAfterViewInit() {
-    const options: Highcharts.Options = {
-      title: {
-        text: 'Highcharts Histogram'
-      },
-      xAxis: [{
-        title: {text: 'Data'},
-        alignTicks: false
-      }, {
-        title: {text: 'Histogram'},
-        alignTicks: false,
-        opposite: true
-      }],
-      yAxis: [{
-        title: {text: 'Data'}
-      }, {
-        title: {text: 'Histogram'},
-        opposite: true
-      }],
-      series: [{
-        name: 'Histogram',
-        type: histogram,
-        xAxis: 1,
-        yAxis: 1,
-        baseSeries: 's1',
-        zIndex: -1
-      }, {
-        name: 'Data',
-        data: this.data,
-        id: 's1',
-        marker: {
-          radius: 2
+  sendRequest(n1: number, n2: number) {
+    this._back.getCamera(n1, n2)
+      .subscribe(data => {
+          console.log(data);
+          this.saved_points = (<Statistic>data).points;
+          this.update_flag = true;
+          this.redrawData();
+        },
+        error => {
+          this.errorMessage = error.error;
         }
-      }]
-    };
+      );
+  }
 
-    this.chart = chart(this.chartTarget.nativeElement, options);
+  getData() {
+    this.errorMessage = '';
+    if (this.selected_start > this.selected_end) {
+      this.errorMessage = 'Неправильный интервал';
+      return;
+    }
+    this.sendRequest(parseInt(this.selected_start, 10), parseInt(this.selected_end, 10));
+  }
+
+  redrawData() {
+    if (this.update_flag) {
+      this.chartData = [];
+      for (let i = 0; i < this.saved_points.length; i++) {
+        this.chartData.push([
+          `${i}`,
+          this.saved_points[i]
+        ]);
+      }
+      this.update_flag = false;
+    }
   }
 
 }
