@@ -4,6 +4,6 @@ import cloud.traffic.server.model.StatisticInfo;
 
 public interface TrafficService {
 
-    StatisticInfo getStatistic(int id);
+    StatisticInfo getStatistic(int n1, int n2);
 
 }

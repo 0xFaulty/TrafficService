@@ -19,9 +19,9 @@ public class TrafficController {
     @Autowired
     private TrafficService trafficService;
 
-    @GetMapping(value = "/camera/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getApiVersion(@PathVariable("id") String id) throws NumberFormatException {
-        return new ResponseEntity<>(trafficService.getStatistic(Integer.parseInt(id)), HttpStatus.OK);
+    @GetMapping(value = "/camera/{n1}/{n2}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getApiVersion(@PathVariable("n1") String n1, @PathVariable("n2") String n2) throws NumberFormatException {
+        return new ResponseEntity<>(trafficService.getStatistic(Integer.parseInt(n1), Integer.parseInt(n2)), HttpStatus.OK);
     }
 
 }

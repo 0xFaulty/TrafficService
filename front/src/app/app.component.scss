@@ -1,4 +1,4 @@
-.example-container {
+.main-container {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -7,11 +7,9 @@
 }
 
 .toolbar-container {
-  height: 5%;
+  height: 50px;
 }
 
-.sidenav-container {
-  height: 95%;
+.main-content-panel {
+  margin-top:  50px;
 }
-
-
