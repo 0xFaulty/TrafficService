@@ -7,9 +7,9 @@ import java.util.Map;
 
 @Data
 public class StatisticInfo {
-    private Map<Integer, List<Integer>> points;
+    private List<Integer> points;
 
-    public StatisticInfo(Map<Integer, List<Integer>> points) {
+    public StatisticInfo(List<Integer> points) {
         this.points = points;
     }
 

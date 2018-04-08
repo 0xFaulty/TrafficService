@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {chart} from 'assets/js/highcharts.js';
 import {TrafficService} from '../../shared/traffic.service';
 import {Statistic} from '../../entity/statistic';
 

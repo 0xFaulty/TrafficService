@@ -30,9 +30,9 @@ public class TrafficServiceImpl implements TrafficService {
             return new StatisticInfo(Collections.emptyList());
         }
         int range = n2 - n1;
-        List<Double> doubles = new ArrayList<>(range);
+        List<Integer> doubles = new ArrayList<>(range);
         for (int i = 0; i < range; i++) {
-            doubles.add(new Random().nextDouble());
+            doubles.add(new Random().nextInt(100));
         }
         return new StatisticInfo(doubles);
     }
